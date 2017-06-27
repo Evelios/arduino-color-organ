@@ -1,0 +1,1 @@
+This is a project to experiment with changing light displays and the introduction of DSP to provide more variety and sound changing input
