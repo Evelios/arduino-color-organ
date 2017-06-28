@@ -1,8 +1,11 @@
 #include <HSBColor.h>
+#include "RGB_Led.h"
 
 const int RPin = A16;
 const int GPin = A17;
 const int BPin = A18;
+
+RGB_Led led;
 
 long loop_tms = 10000;
 long start_time;
@@ -14,11 +17,8 @@ int rgb[]   = {255, 255, 255};
 void setup() {
 
   Serial.begin(9600);
-  
-  // Set Up LED Pins
-  pinMode(RPin, OUTPUT);
-  pinMode(GPin, OUTPUT);
-  pinMode(BPin, OUTPUT);
+
+  led = RGB_Led(RPin, GPin, BPin);
 
   // Set Up Variables
   start_time = millis();
@@ -31,8 +31,6 @@ void loop() {
   hsb[0] = (cos(float(dt % loop_tms)/loop_tms * 2*PI) + 1) / 2;
   H2R_HSBtoRGBfloat(hsb[0], hsb[1], hsb[2], rgb);
 
-  analogWrite(RPin, rgb[0]);
-  analogWrite(GPin, rgb[1]);
-  analogWrite(BPin, rgb[2]);
+  led.setColor(rgb[0], rgb[1], rgb[2]);
 }
 
