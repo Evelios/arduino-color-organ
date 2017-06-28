@@ -1,15 +1,15 @@
+#include <HSBColor.h>
+
 const int RPin = A16;
 const int GPin = A17;
 const int BPin = A18;
 
-// Ideally should be values between 0 and 1 inclusive
-float RVal = 0;
-float GVal = 0;
-float BVal = 0;
-
 long loop_tms = 10000;
 long start_time;
 
+// hsl and hsv are [0-1] rgb is [0-255]
+float hsb[] = {1, 1, 1};
+int rgb[]   = {255, 255, 255};
 
 void setup() {
 
@@ -28,19 +28,11 @@ void setup() {
 void loop() {
   long dt = millis() - start_time;
   
-  RVal = ( cos(float(dt % loop_tms)/loop_tms * 2*PI         ) + 1) / 2;
-  GVal = ( cos(float(dt % loop_tms)/loop_tms * 2*PI + 2*PI/3) + 1) / 2;
-  BVal = ( cos(float(dt % loop_tms)/loop_tms * 2*PI + 4*PI/3) + 1) / 2;
+  hsb[0] = (cos(float(dt % loop_tms)/loop_tms * 2*PI) + 1) / 2;
+  H2R_HSBtoRGBfloat(hsb[0], hsb[1], hsb[2], rgb);
 
-  analogWrite(RPin, rerange(RVal));
-  analogWrite(GPin, rerange(GVal));
-  analogWrite(BPin, rerange(BVal));
+  analogWrite(RPin, rgb[0]);
+  analogWrite(GPin, rgb[1]);
+  analogWrite(BPin, rgb[2]);
 }
-
-// Input  [0,1] float
-// Output [0,255] int
-int rerange(float i) {
-  return constrain(int(i * 255), 0, 255);
-}
-
 
