@@ -26,6 +26,10 @@ public:
     analogWrite(bp, b);
   }
 
+  void setColor(int* rgb) {
+    setColor(rgb[0], rgb[1], rgb[2]);
+  }
+
 private:
   int rp;
   int gp;
