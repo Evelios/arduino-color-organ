@@ -64,7 +64,7 @@ void loop() {
   long dt = millis() - startTime;
 
   // Read and filter the microphone
-  sample = mic.read();
+  sample = abs(mic.read());
 
   hue = (cos(float(dt % loop_tms) / loop_tms * 2 * PI) + 1) / 2;
   float* hues = ColorHarmony::triad(hue);
@@ -74,6 +74,11 @@ void loop() {
   hsb2[0] = hues[1];
   hsb3[0] = hues[2];
 
+  // Assign Brightness valuse
+  hsb1[2] = sample;
+  hsb2[2] = sample;
+  hsb3[2] = sample;
+  
   // Convert over to the RGB space
   H2R_HSBtoRGBfloat(hsb1[0], hsb1[1], hsb1[2], rgb1);
   H2R_HSBtoRGBfloat(hsb2[0], hsb2[1], hsb2[2], rgb2);
